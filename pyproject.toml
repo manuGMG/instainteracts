@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "instainteracts"
+version = "1.0.0"
+description = "Instainteracts is an automation tool for Instagram interactions"
+authors = ["Manuel <hi@manugmg.anonaddy.me>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+selenium = "^4.8.0"
+webdriver-manager = "^3.8.5"
+
+
+[tool.poetry.group.docs.dependencies]
+pdoc = "^12.3.1"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
