@@ -13,4 +13,11 @@ def password():
 def test_hashtag(username, password):
     assert username and password
     insta = InstaInteracts(username, password)
-    insta.comment_by_hashtag('futbol')
+    
+    insta.comment_by_hashtag('instagram', [
+        u'🔥🔥'
+    ], only_recent=True, limit=2)
+
+    insta.follow_by_hashtag('instagram', limit=2)
+
+    insta.like_by_hashtag('instagram', limit=2)

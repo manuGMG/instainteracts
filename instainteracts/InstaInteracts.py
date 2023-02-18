@@ -18,6 +18,7 @@ class InstaInteracts:
     Chrome driver, navigates to Instagram and attempts to log in.
     '''
     def __init__(self, username: str, password: str) -> None:
+        self.follows = 0
         # Get HOME URL
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
@@ -41,7 +42,7 @@ class InstaInteracts:
         
         self.driver.get(HOME)
 
-    def _loop_posts_by_hashtag(self, hashtag: str, func: callable, only_recent: bool):
+    def _loop_posts_by_hashtag(self, hashtag: str, func: callable, only_recent: bool, limit: int = -1, follow_limit: int = -1):
         '''_loop_posts_by_hashtag calls func() on every post of a given hashtag
 
         Args:
@@ -62,17 +63,27 @@ class InstaInteracts:
         for post in posts:
             urls.append(post.get_attribute('href'))
 
-        for url in urls:
+        if limit == -1:
+            limit = len(urls)
+
+        for url in urls[:limit]:
             self.driver.get(url)
             func()
 
-    def follow_by_hashtag(self, hashtag: str, only_recent: bool = False):
+            if follow_limit != -1 and self.follows == follow_limit:
+                self.follows = 0
+                break
+
+            time.sleep(LOOP_TIMEOUT)
+
+    def follow_by_hashtag(self, hashtag: str, only_recent: bool = False, limit: int = FOLLOW_LIMIT):
         '''follow_by_hashtag follows users that have either posted using a hashtag or 
         liked posts using the hashtag
 
         Args:
             hashtag (str): hashtag
             only_recent (bool, optional): if True, only recent posts will be looped. Defaults to False.
+            limit (int, optional): limit of follows. Defaults to FOLLOW_LIMIT.
         '''
         def follow():
             # Get users who liked the post
@@ -85,37 +96,48 @@ class InstaInteracts:
             for btn in follow_btns[:MAX_FOLLOWS_PER_POST]:
                 self.driver.execute_script('arguments[0].scrollIntoView();', btn)
                 btn.click()
+
+                self.follows += 1
+                if self.follows == limit:
+                    break
+                
                 time.sleep(DELAY)
             
             self.driver.back()
 
-        self._loop_posts_by_hashtag(hashtag, follow, only_recent)
+        self._loop_posts_by_hashtag(hashtag, follow, only_recent, follow_limit=limit)
 
-    def like_by_hashtag(self, hashtag: str, only_recent: bool = False):
+    def like_by_hashtag(self, hashtag: str, only_recent: bool = False, limit: int = LIKE_LIMIT):
         '''like_by_hashtag likes posts with a given hashtag
 
         Args:
             hashtag (str): hashtag
             only_recent (bool, optional): if True, only recent posts will be looped. Defaults to False.
+            limit (int, optional): limit of likes. Defaults to LIKE_LIMIT.
         '''
         def like():
-            # Find like button
-            like_btn = WebDriverWait(self.driver, timeout=TIMEOUT) \
-                .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))[LIKE_BUTTON_SVG]
-            
-            # scroll to button and click
-            self.driver.execute_script('arguments[0].scrollIntoView();', like_btn)
-            like_btn.click()
+            try:
+                # Find like button
+                like_btn = WebDriverWait(self.driver, timeout=TIMEOUT) \
+                    .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))
+                
+                # scroll to button and click
+                for index in LIKE_BUTTON_SVG:
+                    self.driver.execute_script('arguments[0].scrollIntoView();', like_btn[index])
+                    like_btn[index].click()
+            except ElementNotInteractableException:
+                return
 
-        self._loop_posts_by_hashtag(hashtag, like, only_recent)
+        self._loop_posts_by_hashtag(hashtag, like, only_recent, limit)
 
-    def comment_by_hashtag(self, hashtag: str, comments: list[str], only_recent: bool = False):
+    def comment_by_hashtag(self, hashtag: str, comments: list[str], only_recent: bool = False, limit: int = COMMENT_LIMIT):
         '''comment_by_hashtag comments posts with a given hashtag. Comments are selected randomly.
 
         Args:
             hashtag (str): hashtag
             comments (list[str]): list of comments
             only_recent (bool, optional): if True, only recent posts will be looped. Defaults to False.
+            limit (int, optional): limit of comments. Defaults to COMMENT_LIMIT.
         '''
         def comment():
             time.sleep(DELAY)
@@ -123,11 +145,11 @@ class InstaInteracts:
             # Attempt to click on the comment button
             try:
                 WebDriverWait(self.driver, timeout=TIMEOUT) \
-                .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))[COMMENT_BUTTON_SVG] \
+                .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))[COMMENT_BUTTON_SVG[0]] \
                 .click()
             except ElementNotInteractableException:
                 WebDriverWait(self.driver, timeout=TIMEOUT) \
-                .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))[COMMENT_BUTTON_SVG_FALLBACK] \
+                .until(lambda d: d.find_elements(By.TAG_NAME, 'svg'))[COMMENT_BUTTON_SVG[1]] \
                 .click()
             
             # Attempt to find the textarea
@@ -149,7 +171,5 @@ class InstaInteracts:
             actions.send_keys(comments[random.randint(0, len(comments) - 1)])
             actions.send_keys(Keys.ENTER)
             actions.perform()
-            
-            time.sleep(DELAY)
 
-        self._loop_posts_by_hashtag(hashtag, comment, only_recent)
+        self._loop_posts_by_hashtag(hashtag, comment, only_recent, limit)
