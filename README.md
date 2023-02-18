@@ -1,6 +1,12 @@
 # InstaInteracts
 InstaInteracts is an automation tool for Instagram interactions (follow, like, comment).
 
+## How to install
+You can install instainteracts by running the following command:
+```
+pip install instainteracts
+```
+
 ## Basic usage
 ```py
 from instainteracts import InstaInteracts

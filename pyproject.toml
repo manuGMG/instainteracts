@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "instainteracts"
-version = "1.0.0"
+version = "1.0.1"
 description = "Instainteracts is an automation tool for Instagram interactions"
 authors = ["Manuel <hi@manugmg.anonaddy.me>"]
 readme = "README.md"
