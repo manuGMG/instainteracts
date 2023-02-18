@@ -1,4 +1,3 @@
-from instainteracts import InstaInteracts
 from pathlib import Path
 import pdoc
 
