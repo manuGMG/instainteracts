@@ -184,9 +184,13 @@ class InstaInteracts:
         unfollow_btns = WebDriverWait(self.driver, timeout=TIMEOUT) \
             .until(lambda d: d.find_elements(By.XPATH, UNFOLLOW_BUTTONS))
 
-        for btn in unfollow_btns:
+        for btn in unfollow_btns[1:]:
             self.driver.execute_script('arguments[0].scrollIntoView();', btn)
             btn.click()
+
+            # Confirm unfollow
+            WebDriverWait(self.driver, timeout=TIMEOUT) \
+            .until(lambda d: d.find_element(By.XPATH, UNFOLLOW_CONFIRMATION)).click()
 
             time.sleep(UNFOLLOW_DELAY)
 

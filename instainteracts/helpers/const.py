@@ -13,7 +13,8 @@ COMMENT_BUTTON = '//button[div[*[local-name()=\'svg\'][@aria-label=\'Comment\']]
 COMMENT_TEXTAREA = '//textarea'
 POST_BUTTON = '//div[text()=\'Post\']'
 FOLLOW_BUTTONS = '//div[text()=\'Follow\']'
-UNFOLLOW_BUTTONS = '//div[text()=\'Following\']'
+UNFOLLOW_BUTTONS = '//button/div/div[text()=\'Following\']'
+UNFOLLOW_CONFIRMATION = '//*[text()=\'Unfollow\']'
 
 # Timeouts/delays
 TIMEOUT = 30
