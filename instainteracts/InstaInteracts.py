@@ -80,9 +80,6 @@ class InstaInteracts:
                 break
 
             time.sleep(LOOP_DELAY)
-    
-    def _send_comment(self, comment: str):
-        pass
 
     def follow_by_hashtag(self, hashtag: str, limit: int, only_recent: bool = False) -> None:
         '''follow_by_hashtag follows users that have either posted using a hashtag or 
