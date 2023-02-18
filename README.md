@@ -8,6 +8,7 @@ pip install instainteracts
 ```
 
 ## Basic usage
+The following example shows how to use InstaInteracts:
 ```py
 from instainteracts import InstaInteracts
 
@@ -34,3 +35,6 @@ insta.like_by_hashtag(
     limit=5 # limit of likes
 )
 ```
+
+## Docs
+All InstaInteracts methods are documented at https://instainteracts.pages.dev
