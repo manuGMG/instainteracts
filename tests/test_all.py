@@ -10,7 +10,7 @@ def username():
 def password():
     return os.environ.get('I_PASSWORD')
 
-def test_hashtag(username, password):
+def test_all(username, password):
     assert username and password
     insta = InstaInteracts(username, password)
 
