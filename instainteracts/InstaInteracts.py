@@ -1,3 +1,4 @@
+import pyperclip
 import random
 import time
 from .helpers.const import *
@@ -13,7 +14,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 class InstaInteracts:
     '''Wrapper Class
-    Wraps all browser functions. When instantiated, creates a new
+
+    Wraps all driver functions. When instantiated, creates a new
     Chrome driver, navigates to Instagram and attempts to log in.
 
     Args:
@@ -162,7 +164,8 @@ class InstaInteracts:
 
             # Send comment
             actions = ActionChains(self.driver)
-            actions.send_keys(random.choice(comments))
+            pyperclip.copy(random.choice(comments))
+            actions.key_down(Keys.CONTROL).send_keys('V').key_up(Keys.CONTROL)
             actions.send_keys(Keys.ENTER)
             actions.perform()
             

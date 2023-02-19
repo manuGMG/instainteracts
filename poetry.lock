@@ -435,6 +435,17 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "pyperclip"
+version = "1.8.2"
+description = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
+]
+
+[[package]]
 name = "pysocks"
 version = "1.7.1"
 description = "A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information."
@@ -663,4 +674,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5d2288526bbcf01e6d399fdd42aa35b19a7f8c6142b40ae77d38636f011b29ab"
+content-hash = "3814e862a585127a1293a1da06252fe97b6464a730f31b6f0545a582f104fabd"

@@ -20,7 +20,7 @@ insta = InstaInteracts(username, password)
 
 insta.comment_by_hashtag(
     hashtag,
-    ['nice', 'hi'], # List of comments
+    ['Comment', u'Emojis supported 🔥'], # List of comments
     only_recent=True, # Interact only with recent posts
     limit=10 # limit of comments
 )

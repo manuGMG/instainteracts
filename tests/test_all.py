@@ -15,10 +15,10 @@ def test_hashtag(username, password):
     insta = InstaInteracts(username, password)
 
     insta.comment_by_hashtag('instagram', [
-        'Nice'
+        u'🔥🔥'
     ], limit=1)
     insta.comment_by_hashtag('instagram', [
-        'Great'
+        u'🔥'
     ], limit=1, only_recent=True)
 
     insta.follow_by_hashtag('instagram', limit=1)

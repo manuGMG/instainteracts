@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 selenium = "^4.8.0"
 webdriver-manager = "^3.8.5"
+pyperclip = "^1.8.2"
 
 
 [tool.poetry.group.docs.dependencies]
