@@ -21,10 +21,15 @@ class InstaInteracts:
     Args:
         username (str): username
         password (str): password
+        headless (bool, optional): if True, Chrome will run in headless mode. Defaults to False.
     '''
-    def __init__(self, username: str, password: str) -> None:
+    def __init__(self, username: str, password: str, headless: bool = False) -> None:
         self.follows = 0
         self.username = username
+
+        # Handle headless mode
+        if headless:
+            options.add_argument('--headless')
 
         # Get HOME URL
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)

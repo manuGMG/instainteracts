@@ -28,3 +28,9 @@ def test_all(username, password):
     insta.like_by_hashtag('instagram', limit=1, only_recent=True)
 
     insta.unfollow(2)
+
+def test_headless(username, password):
+    assert username and password
+    insta = InstaInteracts(username, password, headless=True)
+    
+    insta.unfollow(5)
