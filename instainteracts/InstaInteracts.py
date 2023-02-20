@@ -22,6 +22,9 @@ class InstaInteracts:
         username (str): username
         password (str): password
         headless (bool, optional): if True, Chrome will run in headless mode. Defaults to False.
+    
+    Raises:
+        TimeoutException: raised if login times out
     '''
     def __init__(self, username: str, password: str, headless: bool = False) -> None:
         self.follows = 0
@@ -80,6 +83,7 @@ class InstaInteracts:
 
         for url in urls[:limit]:
             self.driver.get(url)
+            
             func()
 
             if follow_limit != -1 and self.follows == follow_limit:
@@ -184,6 +188,9 @@ class InstaInteracts:
 
         Args:
             limit (int): limit of users to unfollow
+        
+        Raises:
+            TimeoutException: raised if waiting for unfollow buttons times out
         '''
         unfollows = 0
 
