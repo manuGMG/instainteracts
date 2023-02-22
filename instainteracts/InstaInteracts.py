@@ -4,7 +4,7 @@ import time
 from .helpers.const import *
 from .helpers.options import options
 from selenium import webdriver
-from selenium.common.exceptions import ElementNotInteractableException, TimeoutException
+from selenium.common.exceptions import ElementNotInteractableException, TimeoutException, NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -22,38 +22,49 @@ class InstaInteracts:
         username (str): username
         password (str): password
         headless (bool, optional): if True, Chrome will run in headless mode. Defaults to False.
+        user_data_dir (string, optional): directory where Chrome user data will be saved
     
     Raises:
         TimeoutException: raised if login times out
     '''
-    def __init__(self, username: str, password: str, headless: bool = False) -> None:
+    def __init__(self, username: str, password: str, headless: bool = False, user_data_dir: str = '') -> None:
         self.follows = 0
         self.username = username
-
-        # Handle headless mode
+            
+        # Handle optional parameters
         if headless:
             options.add_argument('--headless')
 
+        if user_data_dir:
+            options.add_argument(f'user-data-dir={user_data_dir}')
+
         # Get HOME URL
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-
         # Set window size
         self.driver.set_window_size(WIDTH, HEIGHT)
-
-        self.driver.get(HOME + '?1') # add ? to detect url change later
+        self.driver.get(HOME)
 
         # Input: username and password
         fields = WebDriverWait(self.driver, timeout=TIMEOUT) \
             .until(lambda d: d.find_elements(By.TAG_NAME, 'input'))
+
+        # Handle user_data_dir
+        if user_data_dir:
+            try:
+                self.driver.find_element(By.XPATH, PASSWORD_INPUT)
+            except NoSuchElementException:
+                # we are logged in
+                return
+
         fields[0].send_keys(self.username)
         fields[1].send_keys(password)
 
         # Login
         fields[1].send_keys(Keys.ENTER)
 
-        # Wait until URL changes, as that means we are probably logged in
-        WebDriverWait(self.driver, timeout=10) \
-            .until(lambda d: d.current_url != HOME + '?1')
+        # Wait until the password input can't be found => we are most likely logged in
+        WebDriverWait(self.driver, timeout=LOGIN_TIMEOUT) \
+            .until_not(lambda d: d.find_element(By.XPATH, PASSWORD_INPUT))
         
         self.driver.get(HOME)
 

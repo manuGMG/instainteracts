@@ -7,6 +7,7 @@ FIRST_HASHTAG_A = 0
 FIRST_RECENT_HASHTAG_A = 9
 
 # XPath selectors
+PASSWORD_INPUT = '//input[@aria-label=\'Password\']'
 HASHTAG_POSTS = '//a[div[div[img]]]'
 LIKE_BUTTON = '//button[div[*[local-name()=\'svg\'][@aria-label=\'Like\']]]'
 COMMENT_BUTTON = '//button[div[*[local-name()=\'svg\'][@aria-label=\'Comment\']]]'
@@ -18,11 +19,12 @@ UNFOLLOW_CONFIRMATION = '//*[text()=\'Unfollow\']'
 
 # Timeouts/delays
 TIMEOUT = 30
-LOOP_DELAY = TIMEOUT / 2
-TEXTAREA_TIMEOUT = TIMEOUT / 5
-FOLLOW_DELAY = TIMEOUT / 5
-UNFOLLOW_DELAY = TIMEOUT / 5
-COMMENT_DELAY = TIMEOUT / 5
+LOGIN_TIMEOUT = 10
+LOOP_DELAY = 15
+TEXTAREA_TIMEOUT = 5
+FOLLOW_DELAY = 5
+UNFOLLOW_DELAY = 5
+COMMENT_DELAY = 5
 SHORT_DELAY = 1
 
 # Window size
