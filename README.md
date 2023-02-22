@@ -17,12 +17,13 @@ password = '' # your password
 hashtag = 'insta' # hashtag to interact with
 
 insta = InstaInteracts(username, password)
+# for all optional arguments, read the docs below
 
 insta.comment_by_hashtag(
     hashtag,
-    ['Comment', u'Emojis supported 🔥'], # List of comments
-    only_recent=True, # Interact only with recent posts
-    limit=10 # limit of comments
+    ['Comment', u'Emojis supported 🔥'], # list of comments
+    only_recent=True, # interact only with recent posts
+    limit=1 # limit of comments
 )
 
 insta.follow_by_hashtag(
@@ -32,8 +33,10 @@ insta.follow_by_hashtag(
 
 insta.like_by_hashtag(
     hashtag,
-    limit=5 # limit of likes
+    limit=3 # limit of likes
 )
+
+insta.unfollow(5) # will unfollow 5 users
 ```
 
 ## Docs
