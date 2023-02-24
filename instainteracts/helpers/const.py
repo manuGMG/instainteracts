@@ -30,6 +30,3 @@ SHORT_DELAY = 1
 # Window size
 WIDTH = 375
 HEIGHT = 1000
-
-# Limits
-MAX_FOLLOWS_PER_POST = 5

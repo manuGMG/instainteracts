@@ -124,7 +124,7 @@ class InstaInteracts:
                 # that post probably has no likes
                 return
 
-            for btn in follow_btns[:MAX_FOLLOWS_PER_POST]:
+            for btn in follow_btns:
                 self.driver.execute_script('arguments[0].scrollIntoView();', btn)
                 btn.click()
                 time.sleep(FOLLOW_DELAY)
@@ -165,7 +165,7 @@ class InstaInteracts:
             only_recent (bool, optional): if True, only recent posts will be looped. Defaults to False.
         '''
         def comment():
-            # Attempt to find the textarea and publish button
+            # Attempt to find the textarea and post button
             # catch timeout -- as comments CAN be disabled for that post
             textarea = None
             try:
